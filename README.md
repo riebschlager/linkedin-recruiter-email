@@ -42,6 +42,8 @@ While (heck_yes != “no”) {
 
 Ok. I'm not sure why we're doing two nested `while` loops based on the same condition, but I'm an open-minded guy. I'll roll with it. But I can't abide the snake case, lack of strict comparison and the educated quotes. (Which were no doubt an artifact of composing this code in Microsoft Outlook).
 
+The lack of indentation made my eyes bleed. I mean, *actually* bleed. It was weird.
+
 ```
 If (you_desire == “YES”) {
 ```
