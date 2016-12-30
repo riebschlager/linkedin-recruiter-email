@@ -35,7 +35,7 @@ Document.write (“No [recruiter's name], I want none of these things and want t
 
 There are several glaring issues with this code. First off, it's a bit difficult to call out which language the recruiter was attempting to use. The capital `While` and `If`s threw me for a loop. But the `Document.write` [sic] made me think it was supposed to be JavaScript.
 
-The lack of indentation made my eyes bleed. I mean, _actually_ bleed. It was weird.
+The lack of indentation made my eyes bleed. I mean, _actually_ bleed. It was weird!
 
 In this repo, you'll find a perfectly passable web application that accomplishes what I feel this recruiter set out to do. It's clean, extensible and has zero dependencies. HOW HOT IS THAT?
 

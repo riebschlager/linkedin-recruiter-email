@@ -57,7 +57,7 @@ var RecruiterEmail = function(recipient, sender) {
     this.nextPitch = function() {
         currentPitch++;
         if (currentPitch > pitches.length - 1) {
-            document.location.assign('mailto:' + sender.email + '?subject=Give me a job, jerk!');
+            document.location.assign('mailto:' + sender.email + '?subject=Hey! Give me a job, jerk!');
         } else {
             elements.pitch.innerHTML = pitches[currentPitch];
             elements.affirmativeResponse.innerHTML = affirmativeResponses[currentPitch];
