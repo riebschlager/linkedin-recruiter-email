@@ -1,8 +1,8 @@
-var RecruiterEmail = function(recipient, sender) {
+let RecruiterEmail = function(recipient, sender) {
 
-    var currentPitch = 0;
+    let currentPitch = 0;
 
-    var elements = {
+    let elements = {
         salutation: document.getElementById('salutation'),
         pitch: document.getElementById('pitch'),
         affirmativeResponse: document.getElementById('affirmative-response'),
@@ -31,16 +31,16 @@ var RecruiterEmail = function(recipient, sender) {
         'Able to keep learning new technologies and putting them to good use while I do all the above.'
     ];
 
-    var affirmativeResponses = [
+    let affirmativeResponses = [
         'Yes ' + sender.firstName + ', contact me because I desire this.',
         'Right on!',
         'You had me at "hello".',
         'Now you\'re just toying with me ' + sender.firstName + '!'
     ];
 
-    var negativeResponse = 'No ' + sender.firstName + ', I want none of these things and want to be stagnant with my same old job and to be phased out of new opportunities.';
+    let negativeResponse = 'No ' + sender.firstName + ', I want none of these things and want to be stagnant with my same old job and to be phased out of new opportunities.';
 
-    var valueProposition = 'Staying on top of your industry is necessary. Partner with an actual IT guy not a recruiter that just cares about money and shoving you through a square hole.';
+    let valueProposition = 'Staying on top of your industry is necessary. Partner with an actual IT guy not a recruiter that just cares about money and shoving you through a square hole.';
 
     function init() {
         elements.salutation.innerHTML = recipient + ',';
@@ -48,7 +48,7 @@ var RecruiterEmail = function(recipient, sender) {
         elements.affirmativeResponse.innerHTML = affirmativeResponses[0];
         elements.negativeResponse.innerHTML = negativeResponse;
 
-        var senderEmailLink = '<a href="mailto:' + sender.email + '">' + sender.email + '</a>';
+        let senderEmailLink = '<a href="mailto:' + sender.email + '">' + sender.email + '</a>';
         elements.sender.innerHTML = sender.firstName + ' ' + sender.lastName + '<br>' + senderEmailLink + '<br>' + sender.phone;
     }
 
