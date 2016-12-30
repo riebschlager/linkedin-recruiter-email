@@ -32,24 +32,26 @@ let RecruiterEmail = function(recipient, sender) {
     ];
 
     let affirmativeResponses = [
-        'Yes ' + sender.firstName + ', contact me because I desire this.',
+        `Yes ${sender.firstName}, contact me because I desire this.`,
         'Right on!',
         'You had me at "hello".',
-        'Now you\'re just toying with me ' + sender.firstName + '!'
+        `Now you're just toying with me ${sender.firstName}!`
     ];
 
-    let negativeResponse = 'No ' + sender.firstName + ', I want none of these things and want to be stagnant with my same old job and to be phased out of new opportunities.';
+
+    let negativeResponse = `No ${sender.firstName}, I want none of these things and want to be stagnant with my same old job and to be phased out of new opportunities.`;
 
     let valueProposition = 'Staying on top of your industry is necessary. Partner with an actual IT guy not a recruiter that just cares about money and shoving you through a square hole.';
 
     function init() {
-        elements.salutation.innerHTML = recipient + ',';
+        elements.salutation.innerHTML = `${recipient},`;
         elements.pitch.innerHTML = pitches[currentPitch];
         elements.affirmativeResponse.innerHTML = affirmativeResponses[0];
         elements.negativeResponse.innerHTML = negativeResponse;
 
-        let senderEmailLink = '<a href="mailto:' + sender.email + '">' + sender.email + '</a>';
-        elements.sender.innerHTML = sender.firstName + ' ' + sender.lastName + '<br>' + senderEmailLink + '<br>' + sender.phone;
+        let senderEmailLink = `<a href="mailto:${sender.email}">${sender.email}</a>`;
+        elements.sender.innerHTML = `${sender.firstName} ${sender.lastName}<br>${senderEmailLink}<br>${sender.phone}`;
+
     }
 
     init();
@@ -57,7 +59,7 @@ let RecruiterEmail = function(recipient, sender) {
     this.nextPitch = function() {
         currentPitch++;
         if (currentPitch > pitches.length - 1) {
-            document.location.assign('mailto:' + sender.email + '?subject=Hey! Give me a job, jerk!');
+            document.location.assign(`mailto:${sender.email}?subject=Hey! Give me a job, jerk!`);
         } else {
             elements.pitch.innerHTML = pitches[currentPitch];
             elements.affirmativeResponse.innerHTML = affirmativeResponses[currentPitch];
