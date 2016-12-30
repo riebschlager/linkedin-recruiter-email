@@ -52,7 +52,7 @@ Ok. I'm not sure why we're doing two nested `while` loops based on the same cond
 If (you_desire == “YES”) {
 ```
 
-Again with the capital `If`, you're driving me insane, man. And again with the snake case. What is this? Python? Are you Python-izing your JavaScript? Is this crazyland? Also, `desire` represents a true or false state, so it'd be better to use a boolean in this case. If you open it up to being a string, you're gonna have all kinds of desires lurking around and this code is going to become completely unmaintainable. I think you'd agree, that is not `desire`able.
+Again with the snake case. What is this? Python? Are you Python-izing your JavaScript? Is this crazyland? Also, `desire` represents a true or false state, so it'd be better to use a boolean in this case. If you open it up to being a string, you're gonna have all kinds of desires lurking around and this code is going to become completely unmaintainable. I think you'd agree, that is not `desire`able.
 
 ```
 my_job_to_be = “Challenging, where I get to come into work and be able to use my creative side to develop new applications and break down an applications and make it better.”;
