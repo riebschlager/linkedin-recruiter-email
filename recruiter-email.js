@@ -40,7 +40,7 @@ var RecruiterEmail = function(recipient, sender) {
 
     var negativeResponse = 'No ' + sender.firstName + ', I want none of these things and want to be stagnant with my same old job and to be phased out of new opportunities.';
 
-    var valueProposition = 'Staying on top of your industry is necessary. Partner with and actual IT guy not a recruiter that just cares about money and shoving you through a square hole.';
+    var valueProposition = 'Staying on top of your industry is necessary. Partner with an actual IT guy not a recruiter that just cares about money and shoving you through a square hole.';
 
     function init() {
         elements.salutation.innerHTML = recipient + ',';
