@@ -24,7 +24,7 @@ let RecruiterEmail = function(recipient, sender) {
         email: 'recruiterpants@aol.com'
     };
 
-    var pitches = [
+    let pitches = [
         'Challenging, where I get to come into work and be able to use my creative side to develop new applications and break down existing applications in order to improve them.',
         'Be challenged to bring your creative skills in, to be part of the solutions to complex problems and be valued.',
         'Where I want to wake up every day wanting to go to work, love the people I work with, and feel compensated for my worth.',
