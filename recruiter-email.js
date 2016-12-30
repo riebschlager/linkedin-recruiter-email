@@ -12,7 +12,7 @@ var RecruiterEmail = function(recipient, sender) {
 
     recipient = recipient || 'Person Who Showed Up In a LinkedIn Search';
 
-    if (typeof(sender) !== 'object') {
+    if (sender && typeof(sender) !== 'object') {
         console.log('sender argument must be an object');
         return false;
     }
