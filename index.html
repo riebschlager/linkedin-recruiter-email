@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>LinkedIn Recruiter Message</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Yeah, I'm using bootstrap. It's a joke project. Get over it. -->
+</head>
+
+<body>
+    <div class="container">
+        <h3 id="salutation"></h3>
+        <h5>Would you like your job to be:</h5>
+        <div id="pitch" style="margin-bottom:1em;"></div>
+        <div class="row">
+            <div class="col-sm-6">
+                <button onclick="email.nextPitch()" type="button" class="btn btn-block btn-primary" id="affirmative-response"></button>
+            </div>
+            <div class="col-sm-6">
+                <a href="" onclick="email.noThanks()" id="negative-response"></a>
+            </div>
+        </div>
+        <hr>
+        <p id="sender"></p>
+    </div>
+    <script type="text/javascript" src="recruiter-email.js"></script>
+    <script type="text/javascript">
+        // Example usage. Feel free to customize for your own recruiting needs.
+        var email = new RecruiterEmail('Chris', {
+            firstName: 'Bob',
+            lastName: 'Recruiterson',
+            phone: '111-222-1212',
+            email: 'bob@supertechcoderhirepeople.com'
+        });
+    </script>
+</body>
+
+</html>
