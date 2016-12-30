@@ -80,4 +80,4 @@ Spelling error. Very unprofessional. See me after class.
 
 Another spelling error. `and` should be `an`. I know it's just a comment, but this stuff matters. Also, you should consider that maybe I _want_ to be shoved through a square hole. All night. YEAH! This code review just got SEXY!
 
-## Thanks for reading. Pull requests welcome.
+## Thanks for reading! Chris -  [the816.com](http://the816.com)
