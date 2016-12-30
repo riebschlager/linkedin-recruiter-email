@@ -64,7 +64,7 @@ Document.write (“Yes, [recruiter's name], Contact me because I desire this”)
 My_job_to_be=”Where I want to wake up every day wanting to go to work, love the people I work with, and feel compensated for my worth.”;
 ```
 
-Ok. Now you're just getting silly. You set a variable that was never declared and then decide a few lines later that `my_job_to_be` should be `My_job_to_be`. Let's set aside that you assign this variable and never use it. Let's set aside that the snake case and capitalization completely break whatever logic you were attempting to achieve. `you_had_me_at_hello`??? Come on, man. I mean... _come on_.
+Ok. Now you're just getting silly. You set a variable that was never declared and then decide a few lines later that `my_job_to_be` should be `My_job_to_be`. Let's set aside that you assign this variable and never use it. Let's also set aside that the snake case. Let's even ignore that the capitalization errors completely break whatever logic you were attempting to achieve. `you_had_me_at_hello`??? Come on, man. I mean... _come on_.
 
 Also, `document.write` is a bad practice. Stop it.
 
