@@ -2,6 +2,8 @@
 
 ## A recruiter sent me a clever message written in code. I fixed it.
 
+You can check out the working app here: [https://riebschlager.github.io/linkedin-recruiter-email/](https://riebschlager.github.io/linkedin-recruiter-email/)
+
 ### Here is the email I was sent, unedited but anonymized.
 
 ```
