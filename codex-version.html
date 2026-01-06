@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codex CI: Recruiter Email Build Report</title>
+    <style>
+        :root {
+            --paper: #f8f3e6;
+            --paper-deep: #efe1cc;
+            --ink: #1f1b16;
+            --muted: #5d554b;
+            --accent: #d96b2b;
+            --accent-2: #2b8a7f;
+            --danger: #c94b32;
+            --success: #2e8b57;
+            --border: rgba(31, 27, 22, 0.15);
+            --shadow: 0 20px 40px rgba(26, 20, 10, 0.12);
+            --code-bg: #12100e;
+            --code-text: #f4efe5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Georgia", "Times New Roman", serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 80% 10%, rgba(217, 107, 43, 0.15), transparent 60%),
+                radial-gradient(circle at 15% 25%, rgba(43, 138, 127, 0.12), transparent 50%),
+                linear-gradient(150deg, #f8f3e6 0%, #f4e7d2 45%, #eef3ef 100%);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                    120deg,
+                    rgba(31, 27, 22, 0.05) 0px,
+                    rgba(31, 27, 22, 0.05) 1px,
+                    transparent 1px,
+                    transparent 10px
+                ),
+                repeating-linear-gradient(
+                    30deg,
+                    rgba(31, 27, 22, 0.035) 0px,
+                    rgba(31, 27, 22, 0.035) 1px,
+                    transparent 1px,
+                    transparent 14px
+                );
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+
+        h1, h2, h3 {
+            font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+            letter-spacing: 0.01em;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 3vw, 3rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .hero {
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 2.75rem 2.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: -30px;
+            right: 40px;
+            width: 120px;
+            height: 60px;
+            background: linear-gradient(120deg, rgba(217, 107, 43, 0.3), rgba(217, 107, 43, 0));
+            transform: rotate(8deg);
+        }
+
+        .hero-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            background: var(--accent-2);
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+        }
+
+        .build-id {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 720px;
+        }
+
+        .status-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .stamp {
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.75rem;
+            padding: 0.65rem 1rem;
+            border-radius: 6px;
+            border: 2px dashed currentColor;
+            transform: rotate(-2deg);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .stamp.fail {
+            color: var(--danger);
+        }
+
+        .stamp.ok {
+            color: var(--success);
+            transform: rotate(2deg);
+        }
+
+        .stamp.running {
+            color: var(--accent);
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        .run-btn {
+            margin-top: 1.5rem;
+            border: none;
+            padding: 0.85rem 1.4rem;
+            border-radius: 10px;
+            background: var(--ink);
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 12px 24px rgba(26, 20, 10, 0.2);
+        }
+
+        .run-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: var(--code-text);
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.85rem;
+            padding: 1.25rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .diagnostics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .diag-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-left: 6px solid var(--accent);
+            border-radius: 14px;
+            padding: 1rem;
+            min-height: 130px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .diag-card.fail {
+            border-left-color: var(--danger);
+        }
+
+        .diag-card.pass {
+            border-left-color: var(--success);
+        }
+
+        .diag-card.warning {
+            border-left-color: var(--accent-2);
+        }
+
+        .diag-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .diag-code {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .patch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .patch-card {
+            background: rgba(248, 243, 230, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.25rem;
+        }
+
+        .patch-card ul {
+            padding-left: 1.2rem;
+            color: var(--muted);
+        }
+
+        .release-list {
+            padding-left: 1.2rem;
+            color: var(--muted);
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .link {
+            color: var(--ink);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(31, 27, 22, 0.3);
+        }
+
+        .link:hover {
+            border-bottom-color: var(--accent);
+            color: var(--accent);
+        }
+
+        footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: fadeUp 0.7s ease forwards;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .pulse {
+            animation: cardPulse 0.7s ease;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes cardPulse {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0); }
+        }
+
+        @media (max-width: 700px) {
+            .hero {
+                padding: 2.25rem 1.75rem;
+            }
+
+            .panel {
+                padding: 1.5rem;
+            }
+
+            .run-btn {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal,
+            .stamp.running,
+            .pulse {
+                animation: none;
+                transform: none;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="hero reveal" style="--delay: 0s">
+            <div class="hero-top">
+                <span class="badge">CODEX CI</span>
+                <span class="build-id">Build 2016.2026.0042</span>
+            </div>
+            <h1>Recruiter Email: Continuous Integration Edition</h1>
+            <p class="subtitle">A decade-old cold pitch, now with tests, logs, and a passing intent suite.</p>
+            <div class="status-row">
+                <span class="stamp fail" id="buildStamp">BUILD: FAILED</span>
+                <span class="stamp ok" id="intentStamp">INTENT: PASSING</span>
+            </div>
+            <button class="run-btn" id="runPipeline">Run Pipeline</button>
+        </section>
+
+        <section class="panel reveal" style="--delay: 0.1s">
+            <h2>Original Artifact</h2>
+            <p>Captured verbatim, for maximum archaeology and minimum mercy.</p>
+            <pre class="code-block">Document.respondtomessage.visible=true;
+
+Chris,
+
+While (heck_yes != "no") {
+While (heck_yes != "no") {
+If (you_desire == "YES") {
+my_job_to_be = "Challenging, where I get to come into work and be able to use my creative side to develop new applications and break down an applications and make it better.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire=="right on!") {
+My_job_to_be="Be challenged to bring your creative skills in, to be part of the solutions to complex problems and be valued.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "you_had_me_at_hello") {
+My_job_to_be="Where I want to wake up every day wanting to go to work, love the people I work with, and feel compensated for my worth.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "now you're just toying with me [recruiter's name]!") {
+My_job_to_be="Able to keep learning new technologies and putting them to good use while I do all the above.";
+Document.write ("Yes, [recruiter's name], you'fe killing me! Contact me because I desire this");
+} else {
+Document.write ("No [recruiter's name], I want none of these things and want to be stagnant with my same old job, and to be phased out of new opportunities.");
+//Staying on top of your industry is necessary. Partner with and actual IT guy not a recruiter that just cares about money and shoving you through a square hole.
+}
+}
+
+[recruiter's name]
+[recruiter's contact info]</pre>
+        </section>
+
+        <section class="panel reveal" style="--delay: 0.2s">
+            <h2>Diagnostics</h2>
+            <p>Lint results and unit tests, prioritized by emotional impact.</p>
+            <div class="diagnostics">
+                <div class="diag-card fail">
+                    <span class="diag-code">E001</span>
+                    <h3>Unknown symbol</h3>
+                    <p>Document.respondtomessage.visible</p>
+                </div>
+                <div class="diag-card fail">
+                    <span class="diag-code">E002</span>
+                    <h3>Capitalized keywords</h3>
+                    <p>While / If should be lowercase.</p>
+                </div>
+                <div class="diag-card fail">
+                    <span class="diag-code">E003</span>
+                    <h3>Undefined variables</h3>
+                    <p>heck_yes, you_desire, recruiterName</p>
+                </div>
+                <div class="diag-card warning">
+                    <span class="diag-code">W011</span>
+                    <h3>Case drift</h3>
+                    <p>my_job_to_be vs My_job_to_be</p>
+                </div>
+                <div class="diag-card fail">
+                    <span class="diag-code">E099</span>
+                    <h3>Deprecated API</h3>
+                    <p>document.write should be retired.</p>
+                </div>
+                <div class="diag-card pass">
+                    <span class="diag-code">P007</span>
+                    <h3>Intent detected</h3>
+                    <p>Sincere pitch hiding in the rubble.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel reveal" style="--delay: 0.3s">
+            <h2>Codex Patch</h2>
+            <p>Turn the vibes into data, then render them safely.</p>
+            <div class="patch-grid">
+                <div class="patch-card">
+                    <h3>Spec (Intent)</h3>
+                    <ul>
+                        <li>Show a sequence of job highlights.</li>
+                        <li>Let the candidate respond without infinite loops.</li>
+                        <li>Use one variable name per idea.</li>
+                        <li>Stop overwriting the page.</li>
+                        <li>Keep the human tone.</li>
+                    </ul>
+                </div>
+                <div class="patch-card">
+                    <h3>Implementation (Minimal)</h3>
+                    <pre class="code-block">const pitchSequence = [
+  { pitch: "Creative work that improves apps.", response: "Yes, contact me." },
+  { pitch: "Complex problems, valued contributions.", response: "Right on." },
+  { pitch: "A team you want to show up for.", response: "You had me at hello." },
+  { pitch: "Continuous learning without the square hole.", response: "Now you're just toying with me." }
+];
+
+function respond(candidate, recruiter) {
+  return pitchSequence.map((step) => ({
+    to: candidate,
+    from: recruiter,
+    body: step.pitch,
+    cta: step.response
+  }));
+}</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel reveal" style="--delay: 0.4s">
+            <h2>Release Notes</h2>
+            <ul class="release-list">
+                <li>Removed infinite loop persistence marketing.</li>
+                <li>Replaced Document.write with actual intent.</li>
+                <li>Preserved the pitch, dropped the typos.</li>
+                <li>Shipped zero dependencies and one honest ask.</li>
+            </ul>
+            <div class="links">
+                <a class="link" href="CODEX-FIXES-THIS.md">Read the full Codex writeup</a>
+                <a class="link" href="index.html">Return to the landing page</a>
+            </div>
+        </section>
+
+        <footer>
+            Build failed. Intent passed. Shipping anyway.
+        </footer>
+    </main>
+
+    <script>
+        const runButton = document.getElementById('runPipeline');
+        const buildStamp = document.getElementById('buildStamp');
+        const intentStamp = document.getElementById('intentStamp');
+        const cards = document.querySelectorAll('.diag-card');
+
+        let running = false;
+
+        runButton.addEventListener('click', () => {
+            if (running) {
+                return;
+            }
+            running = true;
+            runButton.textContent = 'Pipeline running...';
+
+            buildStamp.textContent = 'BUILD: RUNNING';
+            intentStamp.textContent = 'INTENT: CHECKING';
+
+            buildStamp.classList.remove('fail');
+            intentStamp.classList.remove('ok');
+
+            buildStamp.classList.add('running');
+            intentStamp.classList.add('running');
+
+            cards.forEach((card, index) => {
+                card.classList.remove('pulse');
+                setTimeout(() => {
+                    card.classList.add('pulse');
+                }, 120 + index * 110);
+            });
+
+            setTimeout(() => {
+                buildStamp.classList.remove('running');
+                intentStamp.classList.remove('running');
+
+                buildStamp.classList.add('fail');
+                intentStamp.classList.add('ok');
+
+                buildStamp.textContent = 'BUILD: FAILED';
+                intentStamp.textContent = 'INTENT: PASSING';
+
+                runButton.textContent = 'Run Pipeline Again';
+                running = false;
+            }, 1600);
+        });
+    </script>
+</body>
+</html>

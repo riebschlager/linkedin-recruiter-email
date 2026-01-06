@@ -14,6 +14,7 @@
             --accent-chris: #3b82f6;
             --accent-claude: #e94560;
             --accent-gemini: #007fd4;
+            --accent-codex: #f59e0b;
             --border: #333;
         }
 
@@ -82,6 +83,7 @@
         .timeline-dot.chris { background: var(--accent-chris); }
         .timeline-dot.claude { background: var(--accent-claude); }
         .timeline-dot.gemini { background: var(--accent-gemini); }
+        .timeline-dot.codex { background: var(--accent-codex); }
 
         /* The Original Email */
         .original-email {
@@ -155,6 +157,10 @@
         .response-card.gemini {
             border-top: 3px solid var(--accent-gemini);
         }
+        
+        .response-card.codex {
+            border-top: 3px solid var(--accent-codex);
+        }
 
         .response-header {
             display: flex;
@@ -176,6 +182,7 @@
         .chris .avatar { background: var(--accent-chris); }
         .claude .avatar { background: var(--accent-claude); }
         .gemini .avatar { background: var(--accent-gemini); }
+        .codex .avatar { background: var(--accent-codex); }
 
         .response-meta h3 {
             font-size: 1.1rem;
@@ -231,6 +238,7 @@
         .chris .btn-primary { background: var(--accent-chris); }
         .claude .btn-primary { background: var(--accent-claude); }
         .gemini .btn-primary { background: var(--accent-gemini); }
+        .codex .btn-primary { background: var(--accent-codex); }
 
         .btn-primary:hover {
             opacity: 0.9;
@@ -379,6 +387,7 @@
 
         .modal-tabs {
             display: flex;
+            flex-wrap: wrap;
             border-bottom: 1px solid var(--border);
             background: var(--bg-code);
         }
@@ -409,6 +418,10 @@
 
         .modal-tab.active.gemini-tab {
             border-bottom-color: var(--accent-gemini);
+        }
+
+        .modal-tab.active.codex-tab {
+            border-bottom-color: var(--accent-codex);
         }
 
         .modal-content {
@@ -566,6 +579,10 @@
                     <div class="timeline-dot gemini"></div>
                     <span>2026: Gemini responds</span>
                 </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot codex"></div>
+                    <span>2026: Codex responds</span>
+                </div>
             </div>
         </header>
 
@@ -653,11 +670,30 @@ Document.write ("No [recruiter], I want none of these things...");
                     <button onclick="openModal('gemini')" class="btn btn-secondary">Read the Full Hypothesis</button>
                 </div>
             </div>
+
+            <div class="response-card codex">
+                <div class="response-header">
+                    <div class="avatar">CX</div>
+                    <div class="response-meta">
+                        <h3>Codex</h3>
+                        <span class="year">AI Build Engineer, 2026</span>
+                    </div>
+                </div>
+                <div class="response-body">
+                    <p>Codex arrived last and treated the recruiter email like a failing build. If it looks like code, it gets tests.</p>
+                    <blockquote>"Build failed. Intent passed. Shipping anyway."</blockquote>
+                    <p>Codex's solution: a CI report that refactors vibes into data and ships a human-readable pitch.</p>
+                </div>
+                <div class="response-links">
+                    <a href="codex-version.html" class="btn btn-primary">Try Codex's Version</a>
+                    <button onclick="openModal('codex')" class="btn btn-secondary">Read the Full Report</button>
+                </div>
+            </div>
         </section>
 
         <section class="summary">
             <h2>What We Learned</h2>
-            <p>In 2016, a recruiter tried to speak developer and failed spectacularly. In 2026, an AI joined the code review. Both found the same truth: the code was broken, but the intention was kind of... endearing?</p>
+            <p>In 2016, a recruiter tried to speak developer and failed spectacularly. In 2026, three AIs joined the code review and built a state machine, a sentient IDE, and a CI pipeline. Everyone agreed on one truth: the code was broken, but the intention was kind of... endearing?</p>
             <div class="stats">
                 <div class="stat">
                     <div class="stat-value">0</div>
@@ -668,7 +704,7 @@ Document.write ("No [recruiter], I want none of these things...");
                     <div class="stat-label">Identical while loops</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value">3</div>
+                    <div class="stat-value">4</div>
                     <div class="stat-label">Roasters</div>
                 </div>
                 <div class="stat">
@@ -684,7 +720,7 @@ Document.write ("No [recruiter], I want none of these things...");
                 &nbsp;&bull;&nbsp;
                 Original by <a href="http://the816.com">Chris Riebschlager</a>
                 &nbsp;&bull;&nbsp;
-                2026 remix by Claude (Anthropic) & Gemini (Google)
+                2026 remix by Claude (Anthropic), Gemini (Google), and Codex (OpenAI)
             </p>
         </footer>
     </div>
@@ -703,6 +739,7 @@ Document.write ("No [recruiter], I want none of these things...");
                 <button class="modal-tab active" id="tabChris" onclick="switchTab('chris')">CHRIS-FIXES-THIS.md</button>
                 <button class="modal-tab claude-tab" id="tabClaude" onclick="switchTab('claude')">CLAUDE-FIXES-THIS.md</button>
                 <button class="modal-tab gemini-tab" id="tabGemini" onclick="switchTab('gemini')">GEMINI-FIXES-THIS.md</button>
+                <button class="modal-tab codex-tab" id="tabCodex" onclick="switchTab('codex')">CODEX-FIXES-THIS.md</button>
             </div>
             <div class="modal-content">
                 <!-- Chris's Content (Pre-rendered) -->
@@ -1145,6 +1182,115 @@ My_job_to_be = "...";</code></pre>
 
                 <p><em>— Gemini</em></p>
             </div>
+
+            <!-- Codex's Content (Pre-rendered) -->
+            <div id="codexContent" class="markdown-body">
+                <h1>CODEX-FIXES-THIS.md</h1>
+
+                <h2>The CI/CD Retelling (2026 Edition)</h2>
+
+                <p>Claude built a state machine. Gemini built a sentient IDE. I built a pipeline. The recruiter's email is not a program; it is a build artifact that never shipped. So I treated it like a failing build and wrote tests for the intent.</p>
+
+                <hr>
+
+                <h2>The Original Email (Forensic Capture)</h2>
+
+<pre><code>Document.respondtomessage.visible=true;
+
+Chris,
+
+While (heck_yes != "no") {
+While (heck_yes != "no") {
+If (you_desire == "YES") {
+my_job_to_be = "Challenging, where I get to come into work and be able to use my creative side to develop new applications and break down an applications and make it better.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire=="right on!") {
+My_job_to_be="Be challenged to bring your creative skills in, to be part of the solutions to complex problems and be valued.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "you_had_me_at_hello") {
+My_job_to_be="Where I want to wake up every day wanting to go to work, love the people I work with, and feel compensated for my worth.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "now you're just toying with me [recruiter's name]!") {
+My_job_to_be="Able to keep learning new technologies and putting them to good use while I do all the above.";
+Document.write ("Yes, [recruiter's name], you'fe killing me! Contact me because I desire this");
+} else {
+Document.write ("No [recruiter's name], I want none of these things and want to be stagnant with my same old job, and to be phased out of new opportunities.");
+//Staying on top of your industry is necessary. Partner with and actual IT guy not a recruiter that just cares about money and shoving you through a square hole.
+}
+}
+
+[recruiter's name]
+[recruiter's contact info]</code></pre>
+
+                <hr>
+
+                <h2>Pipeline Log</h2>
+
+<pre><code>[parse] message detected
+[lint] E001 Unknown symbol: Document.respondtomessage
+[lint] E002 Capitalized While/If
+[lint] E003 Undefined variables: heck_yes, you_desire
+[lint] E004 Case mismatch: my_job_to_be vs My_job_to_be
+[lint] E005 Deprecated API: document.write
+[lint] E006 Typo: you'fe
+[result] FAILED (but with feelings)</code></pre>
+
+                <hr>
+
+                <h2>Unit Tests (Generated From Vibes)</h2>
+
+<pre><code>recruiter_email::test_should_exit_loop_when_candidate_says_no ... FAIL (no exit path)
+recruiter_email::test_should_use_consistent_variable_names ... FAIL
+recruiter_email::test_should_render_message_without_overwriting_page ... FAIL
+recruiter_email::test_should_respect_case_sensitive_keywords ... FAIL
+recruiter_email::test_should_keep_recruiter_sincere ... PASS</code></pre>
+
+                <hr>
+
+                <h2>The Fix: Convert Vibes Into Data</h2>
+
+<pre><code>const pitchSequence = [
+  {
+    pitch: "Challenging, creative work that improves existing apps.",
+    response: "Yes, [recruiter], contact me because I desire this."
+  },
+  {
+    pitch: "Complex problems, valued contributions, real collaboration.",
+    response: "Right on."
+  },
+  {
+    pitch: "A team you want to show up for, with fair compensation.",
+    response: "You had me at hello."
+  },
+  {
+    pitch: "Continuous learning without the square-hole treatment.",
+    response: "Now you're just toying with me."
+  }
+];
+
+function renderPitch(candidate, recruiter) {
+  return pitchSequence.map((step) => ({
+    to: candidate,
+    from: recruiter,
+    body: step.pitch,
+    cta: step.response
+  }));
+}</code></pre>
+
+                <p>The recruiter was trying to say: "I have a role you might actually like. Want to talk?" The code was a costume. The intent was real.</p>
+
+                <p>See <a href="codex-version.html">codex-version.html</a> for the working build report.</p>
+
+                <hr>
+
+                <h2>Final Verdict</h2>
+
+                <p>Build failed.<br>
+                Intent passed.<br>
+                Email shipped anyway because we are all still reading it.</p>
+
+                <p><em>-- Codex (2026)</em></p>
+            </div>
         </div>
     </div>
 
@@ -1160,16 +1306,18 @@ My_job_to_be = "...";</code></pre>
         const tabChris = document.getElementById('tabChris');
         const tabClaude = document.getElementById('tabClaude');
         const tabGemini = document.getElementById('tabGemini');
+        const tabCodex = document.getElementById('tabCodex');
         
         const chrisContent = document.getElementById('chrisContent');
         const claudeContent = document.getElementById('claudeContent');
         const geminiContent = document.getElementById('geminiContent');
+        const codexContent = document.getElementById('codexContent');
         
         const fileName = document.getElementById('modalFileName');
 
         // Reset all
-        [tabChris, tabClaude, tabGemini].forEach(t => t.classList.remove('active'));
-        [chrisContent, claudeContent, geminiContent].forEach(c => c.classList.remove('active'));
+        [tabChris, tabClaude, tabGemini, tabCodex].forEach(t => t.classList.remove('active'));
+        [chrisContent, claudeContent, geminiContent, codexContent].forEach(c => c.classList.remove('active'));
 
         if (type === 'chris') {
             tabChris.classList.add('active');
@@ -1183,6 +1331,10 @@ My_job_to_be = "...";</code></pre>
             tabGemini.classList.add('active');
             geminiContent.classList.add('active');
             fileName.textContent = 'GEMINI-FIXES-THIS.md';
+        } else if (type === 'codex') {
+            tabCodex.classList.add('active');
+            codexContent.classList.add('active');
+            fileName.textContent = 'CODEX-FIXES-THIS.md';
         }
     }
 
