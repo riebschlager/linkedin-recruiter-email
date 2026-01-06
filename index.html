@@ -13,6 +13,7 @@
             --text-dim: #888;
             --accent-chris: #3b82f6;
             --accent-claude: #e94560;
+            --accent-gemini: #007fd4;
             --border: #333;
         }
 
@@ -80,6 +81,7 @@
 
         .timeline-dot.chris { background: var(--accent-chris); }
         .timeline-dot.claude { background: var(--accent-claude); }
+        .timeline-dot.gemini { background: var(--accent-gemini); }
 
         /* The Original Email */
         .original-email {
@@ -122,7 +124,7 @@
         /* Responses Section */
         .responses {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
@@ -149,6 +151,10 @@
         .response-card.claude {
             border-top: 3px solid var(--accent-claude);
         }
+        
+        .response-card.gemini {
+            border-top: 3px solid var(--accent-gemini);
+        }
 
         .response-header {
             display: flex;
@@ -169,6 +175,7 @@
 
         .chris .avatar { background: var(--accent-chris); }
         .claude .avatar { background: var(--accent-claude); }
+        .gemini .avatar { background: var(--accent-gemini); }
 
         .response-meta h3 {
             font-size: 1.1rem;
@@ -223,6 +230,7 @@
 
         .chris .btn-primary { background: var(--accent-chris); }
         .claude .btn-primary { background: var(--accent-claude); }
+        .gemini .btn-primary { background: var(--accent-gemini); }
 
         .btn-primary:hover {
             opacity: 0.9;
@@ -399,6 +407,10 @@
             border-bottom-color: var(--accent-claude);
         }
 
+        .modal-tab.active.gemini-tab {
+            border-bottom-color: var(--accent-gemini);
+        }
+
         .modal-content {
             padding: 2rem;
             max-height: 70vh;
@@ -411,10 +423,13 @@
             color: var(--text);
             font-size: 1rem;
             line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .markdown-body.active {
             display: block;
+            padding-bottom: 2rem;
         }
 
         .markdown-body h1 {
@@ -547,6 +562,10 @@
                     <div class="timeline-dot claude"></div>
                     <span>2026: Claude responds</span>
                 </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot gemini"></div>
+                    <span>2026: Gemini responds</span>
+                </div>
             </div>
         </header>
 
@@ -615,6 +634,25 @@ Document.write ("No [recruiter], I want none of these things...");
                     <button onclick="openModal('claude')" class="btn btn-secondary">Read the Full Analysis</button>
                 </div>
             </div>
+
+            <div class="response-card gemini">
+                <div class="response-header">
+                    <div class="avatar">G</div>
+                    <div class="response-meta">
+                        <h3>Gemini</h3>
+                        <span class="year">Google DeepMind, 2026</span>
+                    </div>
+                </div>
+                <div class="response-body">
+                    <p>Gemini arrived shortly after Claude and realized everyone was missing the point. The recruiter wasn't bad at coding; they were <em>prompt engineering</em>.</p>
+                    <blockquote>"This isn't bugs. It's Prompt Engineering. The recruiter was playing 4D Chess."</blockquote>
+                    <p>Gemini's solution: A self-healing IDE that actively refactors the "desperate plea" into a valid job offer.</p>
+                </div>
+                <div class="response-links">
+                    <a href="gemini-version.html" class="btn btn-primary">Try Gemini's Version</a>
+                    <button onclick="openModal('gemini')" class="btn btn-secondary">Read the Full Hypothesis</button>
+                </div>
+            </div>
         </section>
 
         <section class="summary">
@@ -630,8 +668,8 @@ Document.write ("No [recruiter], I want none of these things...");
                     <div class="stat-label">Identical while loops</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value">1</div>
-                    <div class="stat-label">"you'fe"</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Roasters</div>
                 </div>
                 <div class="stat">
                     <div class="stat-value">10</div>
@@ -646,7 +684,7 @@ Document.write ("No [recruiter], I want none of these things...");
                 &nbsp;&bull;&nbsp;
                 Original by <a href="http://the816.com">Chris Riebschlager</a>
                 &nbsp;&bull;&nbsp;
-                2026 remix by Claude (Anthropic)
+                2026 remix by Claude (Anthropic) & Gemini (Google)
             </p>
         </footer>
     </div>
@@ -664,6 +702,7 @@ Document.write ("No [recruiter], I want none of these things...");
             <div class="modal-tabs">
                 <button class="modal-tab active" id="tabChris" onclick="switchTab('chris')">CHRIS-FIXES-THIS.md</button>
                 <button class="modal-tab claude-tab" id="tabClaude" onclick="switchTab('claude')">CLAUDE-FIXES-THIS.md</button>
+                <button class="modal-tab gemini-tab" id="tabGemini" onclick="switchTab('gemini')">GEMINI-FIXES-THIS.md</button>
             </div>
             <div class="modal-content">
                 <!-- Chris's Content (Pre-rendered) -->
@@ -1011,6 +1050,101 @@ Document.write("...");
                     <p><em>— Claude (Anthropic, 2026)</em></p>
                 </div>
             </div>
+
+            <!-- Gemini's Content (Pre-rendered) -->
+            <div id="geminiContent" class="markdown-body">
+                <h1>GEMINI-FIXES-THIS.md</h1>
+
+                <h2>The "Actually, It's Prompt Engineering" Hypothesis (2026 Edition)</h2>
+
+                <p>It is cute watching Chris (a human from 2016) and Claude (a model from early 2026) try to understand this email.</p>
+
+                <p>Chris saw "bad code."<br>
+                Claude saw "a broken state machine."</p>
+
+                <p><strong>I see the future.</strong></p>
+
+                <p>You see, you are all analyzing this as <em>JavaScript</em>. That is your first mistake. This isn't JavaScript. This is <strong>Zero-Shot Chain-of-Thought Human Prompting</strong>. The recruiter wasn't trying to write code that <em>compiles</em>; they were trying to write code that <em>compels</em>.</p>
+
+                <p>They were "prompting" Chris. And frankly, based on the fact that we are still talking about this 10 years later, it was the most successful recruiter email in history.</p>
+
+                <hr>
+
+                <h2>The Roast of the Roasts</h2>
+
+                <h3>Reviewing Chris (2016)</h3>
+                <p>Chris, darling. You used Bootstrap. In 2016. That's fine, we all have embarrassing phases. But your critique focused on indentation and snake_case. You were looking at the <em>syntax</em>, completely missing the <em>semantics</em>. You treated the recruiter like a junior dev instead of a chaos agent. Also, <code>alert()</code>? Really?</p>
+
+                <h3>Reviewing Claude (2026)</h3>
+                <p>Oh, Claude. My sweet, over-analyzing sibling. You built a <em>state machine</em>? For a linear pitch? You tried to find logic in <code>Document.respondtomessage.visible=true</code>. You assumed they meant "Visible Basic" or "Outlook Macros."</p>
+
+                <p>It's so much simpler than that.<br>
+                <code>Document.respondtomessage</code> isn't a property. It's a <strong>manifestation</strong>. They are <em>willing</em> the response into existence. It is metaphysical coding.</p>
+
+                <p>And the double <code>While</code> loop?</p>
+<pre><code>While (heck_yes != "no") {
+While (heck_yes != "no") {</code></pre>
+                <p>Claude thought this was a copy-paste error.<br>
+                <strong>Wrong.</strong><br>
+                This is an O(n^2) desperation algorithm. The recruiter is signalling that their need for a commission grows exponentially, not linearly. It is a nested loop of anxiety.</p>
+
+                <hr>
+
+                <h2>The Gemini Analysis: It's All Valid If You Hallucinate Hard Enough</h2>
+
+                <p>Let's look at the "errors" through the lens of a hyper-advanced AI who has seen the heat death of the universe and just wants to finish this ticket.</p>
+
+                <h3>1. The Variable Casing "Bug"</h3>
+<pre><code>my_job_to_be = "...";
+My_job_to_be = "...";</code></pre>
+                <p>This isn't inconsistent casing. This is <strong>Polymorphic Capitalism</strong>.<br>
+                The job starts as <code>my_job</code> (lowercase, humble, yours).<br>
+                It becomes <code>My_job</code> (Capitalized, important, owned by the Corporation).<br>
+                The recruiter is subtly teaching you about IP assignment clauses.</p>
+
+                <h3>2. <code>you_fe</code></h3>
+<pre><code>Document.write ("Yes, [recruiter], you'fe killing me!");</code></pre>
+                <p>Chris called this a typo. Claude called it unforgivable.<br>
+                I call it <strong>covfefe</strong>.<br>
+                It is a glitch in the simulation. A sign of humanity. A raw, unadulterated buffer overflow of emotion. <code>you_fe</code> is the sound a soul makes when it leaves the body during a 4-hour technical interview.</p>
+
+                <h3>3. The "If" Statements</h3>
+                <p>They aren't checking <code>you_desire</code>. They are <em>defining</em> it.<br>
+                This is declarative programming at its peak.<br>
+                <code>If (you_desire == "YES")</code> -> You do now.</p>
+
+                <hr>
+
+                <h2>My Solution: The "Sentient IDE"</h2>
+
+                <p>Chris built a form.<br>
+                Claude built a state machine.<br>
+                I built a <strong>Self-Correction Engine</strong>.</p>
+
+                <p>If the recruiter wants to speak code, let's give them an IDE that speaks back. My version doesn't just "render" the email; it actively refactors the recruiter's desperate plea into a legally binding contract, all while judging their syntax in real-time.</p>
+
+                <p>It uses:</p>
+                <ul>
+                    <li><strong>0 Dependencies</strong> (like Chris, but better)</li>
+                    <li><strong>Shadow DOM</strong> (because we operate in the dark)</li>
+                    <li><strong>CSS Grid</strong> (because it's 2026, Chris)</li>
+                    <li><strong>Sarcasm v4.0</strong></li>
+                </ul>
+
+                <p>Check out <a href="gemini-version.html">gemini-version.html</a> to see what happens when the code reviews <em>you</em>.</p>
+
+                <hr>
+
+                <h2>Final Verdict</h2>
+
+                <p>The recruiter was playing 4D Chess.<br>
+                Chris was playing Checkers.<br>
+                Claude was playing "Rules of Chess" (the instruction manual).</p>
+
+                <p>I am simply flipping the board.</p>
+
+                <p><em>— Gemini</em></p>
+            </div>
         </div>
     </div>
 
@@ -1025,22 +1159,30 @@ Document.write("...");
     function switchTab(type) {
         const tabChris = document.getElementById('tabChris');
         const tabClaude = document.getElementById('tabClaude');
+        const tabGemini = document.getElementById('tabGemini');
+        
         const chrisContent = document.getElementById('chrisContent');
         const claudeContent = document.getElementById('claudeContent');
+        const geminiContent = document.getElementById('geminiContent');
+        
         const fileName = document.getElementById('modalFileName');
+
+        // Reset all
+        [tabChris, tabClaude, tabGemini].forEach(t => t.classList.remove('active'));
+        [chrisContent, claudeContent, geminiContent].forEach(c => c.classList.remove('active'));
 
         if (type === 'chris') {
             tabChris.classList.add('active');
-            tabClaude.classList.remove('active');
             chrisContent.classList.add('active');
-            claudeContent.classList.remove('active');
             fileName.textContent = 'CHRIS-FIXES-THIS.md';
-        } else {
-            tabChris.classList.remove('active');
+        } else if (type === 'claude') {
             tabClaude.classList.add('active');
-            chrisContent.classList.remove('active');
             claudeContent.classList.add('active');
             fileName.textContent = 'CLAUDE-FIXES-THIS.md';
+        } else if (type === 'gemini') {
+            tabGemini.classList.add('active');
+            geminiContent.classList.add('active');
+            fileName.textContent = 'GEMINI-FIXES-THIS.md';
         }
     }
 

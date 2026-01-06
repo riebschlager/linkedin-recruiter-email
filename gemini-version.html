@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Refactor: The Sentient IDE</title>
+    <style>
+        :root {
+            --bg: #1e1e1e;
+            --sidebar: #252526;
+            --activity: #333333;
+            --accent: #007fd4;
+            --text: #d4d4d4;
+            --keyword: #569cd6;
+            --string: #ce9178;
+            --comment: #6a9955;
+            --function: #dcdcaa;
+            --variable: #9cdcfe;
+            --error: #f44336;
+            --success: #4ec9b0;
+            --warning: #cca700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Fake Window Chrome */
+        header {
+            background: #3c3c3c;
+            color: #cccccc;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .window-controls {
+            position: absolute;
+            left: 1rem;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+
+        /* IDE Layout */
+        .ide-container {
+            display: flex;
+            flex: 1;
+        }
+
+        .activity-bar {
+            width: 50px;
+            background: var(--activity);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+            cursor: pointer;
+        }
+        .icon.active { opacity: 1; border-left: 2px solid var(--text); }
+
+        .sidebar {
+            width: 200px;
+            background: var(--sidebar);
+            padding: 10px;
+            font-size: 0.8rem;
+            border-right: 1px solid #000;
+        }
+
+        .file-explorer-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+        }
+
+        .file-item {
+            padding: 4px 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text);
+        }
+        .file-item:hover { background: #2a2d2e; }
+        .file-item.active { background: #37373d; }
+
+        .editor-area {
+            flex: 1;
+            position: relative;
+            background: var(--bg);
+            overflow: auto;
+        }
+
+        .tab-bar {
+            background: var(--sidebar);
+            display: flex;
+        }
+
+        .tab {
+            padding: 8px 15px;
+            background: var(--bg);
+            border-top: 1px solid var(--accent);
+            color: var(--text);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumbs {
+            padding: 5px 20px;
+            font-size: 0.8rem;
+            color: #888;
+            border-bottom: 1px solid #333;
+        }
+
+        /* Editor Content */
+        .code-container {
+            padding: 20px;
+            line-height: 1.5;
+            font-size: 14px;
+            white-space: pre;
+            counter-reset: line;
+        }
+
+        .line {
+            display: block;
+            min-height: 1.5em;
+        }
+
+        .line::before {
+            counter-increment: line;
+            content: counter(line);
+            display: inline-block;
+            width: 30px;
+            margin-right: 15px;
+            color: #858585;
+            text-align: right;
+            font-size: 12px;
+        }
+
+        /* Syntax Highlighting */
+        .kwd { color: var(--keyword); }
+        .str { color: var(--string); }
+        .com { color: var(--comment); }
+        .fun { color: var(--function); }
+        .var { color: var(--variable); }
+        .err { 
+            text-decoration: wavy underline var(--error);
+            position: relative;
+        }
+
+        /* Linter Popups */
+        .lint-msg {
+            position: absolute;
+            background: #252526;
+            border: 1px solid var(--error);
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            display: none;
+            max-width: 300px;
+            white-space: normal;
+            pointer-events: none;
+        }
+        .lint-msg::before {
+            content: "⚠️ GEMINI LINTER";
+            display: block;
+            font-weight: bold;
+            color: var(--error);
+            margin-bottom: 4px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 4px;
+        }
+
+        /* Action Button */
+        .refactor-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transform: translateY(100px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .refactor-btn:hover { background: #0060a0; }
+        
+        .refactor-btn.visible { transform: translateY(0); }
+
+        /* Output View */
+        .output-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 50;
+        }
+
+        .output-view.active { transform: translateY(0); }
+
+        .job-card {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            text-align: center;
+            animation: slideUp 0.6s ease 0.3s backwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .job-title {
+            font-size: 2rem;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .job-salary {
+            color: var(--success);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            font-family: inherit;
+        }
+
+        .job-desc {
+            color: #aaa;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: grid;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-primary:hover { background: #0060a0; transform: scale(1.02); }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #555;
+            color: #888;
+        }
+        .btn-secondary:hover { border-color: #888; color: #ccc; }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent);
+            opacity: 0.5;
+            box-shadow: 0 0 10px var(--accent);
+            display: none;
+            z-index: 999;
+        }
+
+        .status-bar {
+            height: 22px;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 12px;
+            justify-content: space-between;
+        }
+
+        .linter-status {
+            display: flex;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="window-controls">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+        recruiter_email.js - Gemini Code - Visual Studio Code
+    </header>
+
+    <div class="ide-container">
+        <div class="activity-bar">
+            <div class="icon active">📄</div>
+            <div class="icon">🔍</div>
+            <div class="icon">🕸️</div>
+            <div class="icon">🐛</div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="file-explorer-title">Explorer</div>
+            <div class="file-item active">
+                <span>JS</span> recruiter_email.js
+            </div>
+            <div class="file-item" style="opacity:0.5">
+                <span>MD</span> CHRIS_ROAST.md
+            </div>
+            <div class="file-item" style="opacity:0.5">
+                <span>MD</span> CLAUDE_ROAST.md
+            </div>
+        </div>
+
+        <div class="editor-area">
+            <div class="tab-bar">
+                <div class="tab">
+                    <span>JS</span> recruiter_email.js <span>✕</span>
+                </div>
+            </div>
+            <div class="breadcrumbs">src > email > disaster.js</div>
+            
+            <div class="code-container" id="code"></div>
+            
+            <div id="lint-tooltip" class="lint-msg"></div>
+            <div id="scan-line" class="scan-line"></div>
+
+            <!-- The Output Overlay -->
+            <div class="output-view" id="output-view">
+                <div class="job-card">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+                    <h1 class="job-title">Senior Creative Developer</h1>
+                    <div class="job-salary">$250,000 - $400,000 / year + Equity</div>
+                    <p class="job-desc">
+                        We noticed you refactored our terrible email. That was the test.<br>
+                        Come work where "Creative Skills" means actually building cool stuff, 
+                        not just fixing recruiter syntax errors.
+                    </p>
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="alert('Offer Accepted! Welcome to the future.')">
+                            Accept Offer (git commit -m "Yes")
+                        </button>
+                        <button class="btn btn-secondary" onclick="app.reset()">
+                            Return to Legacy Codebase
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="linter-status">
+            <span>master*</span>
+            <span id="error-count">0 Errors</span>
+            <span id="warning-count">0 Warnings</span>
+        </div>
+        <div>Ln <span id="ln">1</span>, Col <span id="col">1</span></div>
+    </div>
+
+    <button id="refactor-btn" class="refactor-btn">✨ AUTO-FIX ALL ISSUES</button>
+
+    <script>
+        const codeText = `Document.respondtomessage.visible=true;
+
+Chris,
+
+While (heck_yes != "no") {
+While (heck_yes != "no") {
+If (you_desire == "YES") {
+my_job_to_be = "Challenging, where I get to come into work...";
+Document.write ("Yes, [recruiter], Contact me because I desire this");
+} else if (you_desire=="right on!") {
+My_job_to_be="Be challenged to bring your creative skills in...";
+... 
+} else if (you_desire == "now you're just toying with me [recruiter]!") {
+Document.write ("Yes, [recruiter], you'fe killing me!");
+}
+}`;
+
+        const app = {
+            elCode: document.getElementById('code'),
+            elTooltip: document.getElementById('lint-tooltip'),
+            elBtn: document.getElementById('refactor-btn'),
+            elOutput: document.getElementById('output-view'),
+            elScan: document.getElementById('scan-line'),
+            
+            // "Lint" errors to show
+            errors: [
+                { line: 1, text: "Document", msg: "Undefined global. Did you mean 'manifest_reality()'? Also, strictly speaking, this is nonsense." },
+                { line: 5, text: "While", msg: "Capitalized keyword. This indicates you are yelling the loop." },
+                { line: 6, text: "While", msg: "Duplicate loop detected. Desperation level: Critical." },
+                { line: 7, text: "If", msg: "Capitalized keyword. Python developer detected? Unclear." },
+                { line: 8, text: "my_job_to_be", msg: "CamelCase violation. Snake_case is so 2010." },
+                { line: 11, text: "My_job_to_be", msg: "Inconsistent casing. Variable identity crisis." },
+                { line: 14, text: "you'fe", msg: "CRITICAL ERROR: 'you'fe'. Parsing impossible. Abandoning all hope." }
+            ],
+
+            init() {
+                this.typeCode();
+                
+                document.getElementById('refactor-btn').addEventListener('click', () => this.refactor());
+            },
+
+            typeCode() {
+                let i = 0;
+                // Pre-process syntax highlighting for the "typed" text is hard, 
+                // so we'll just dump the whole HTML line by line with a delay
+                const lines = codeText.split('\n');
+                let lineIndex = 0;
+                
+                const typeLine = () => {
+                    if (lineIndex >= lines.length) {
+                        this.analyze();
+                        return;
+                    }
+
+                    const line = lines[lineIndex];
+                    const div = document.createElement('div');
+                    div.className = 'line';
+                    
+                    // Simple regex highlighting
+                    let html = line
+                        .replace(/(Document|While|If|else|return)/g, '<span class="kwd">$1</span>')
+                        .replace(/(".*?")/g, '<span class="str">$1</span>')
+                        .replace(/\/\/.* /g, '<span class="com">$&</span>')
+                        .replace(/(my_job_to_be|My_job_to_be|heck_yes|you_desire)/g, '<span class="var">$1</span>');
+
+                    div.innerHTML = html;
+                    this.elCode.appendChild(div);
+                    
+                    // Update cursor pos in status bar
+                    document.getElementById('ln').innerText = lineIndex + 1;
+                    document.getElementById('col').innerText = line.length;
+
+                    lineIndex++;
+                    setTimeout(typeLine, 50);
+                };
+
+                typeLine();
+            },
+
+            analyze() {
+                // Add error squiggles
+                const lineEls = this.elCode.querySelectorAll('.line');
+                
+                this.errors.forEach(err => {
+                    const lineDiv = lineEls[err.line - 1]; // 0-indexed
+                    if (lineDiv) {
+                        // Very naive replace for demo purposes, assuming unique enough text
+                        const html = lineDiv.innerHTML;
+                        const errorHtml = `<span class="err" data-msg="${err.msg}">${err.text}</span>`;
+                        lineDiv.innerHTML = html.replace(err.text, errorHtml);
+                    }
+                });
+
+                // Update status bar
+                document.getElementById('error-count').innerText = "7 Errors";
+                document.getElementById('error-count').style.color = "var(--error)";
+
+                // Add hover events
+                this.elCode.querySelectorAll('.err').forEach(el => {
+                    el.addEventListener('mouseenter', (e) => {
+                        const rect = e.target.getBoundingClientRect();
+                        this.elTooltip.style.display = 'block';
+                        this.elTooltip.style.top = (rect.bottom + 5) + 'px';
+                        this.elTooltip.style.left = rect.left + 'px';
+                        this.elTooltip.innerText = e.target.getAttribute('data-msg');
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        this.elTooltip.style.display = 'none';
+                    });
+                });
+
+                // Show button
+                setTimeout(() => {
+                    this.elBtn.classList.add('visible');
+                }, 500);
+            },
+
+            refactor() {
+                this.elBtn.classList.remove('visible');
+                this.elScan.style.display = 'block';
+                
+                // Animation of scan line
+                let pos = 0;
+                const anim = setInterval(() => {
+                    pos += 2;
+                    this.elScan.style.top = pos + '%';
+                    if (pos > 100) {
+                        clearInterval(anim);
+                        this.elScan.style.display = 'none';
+                        this.showSuccess();
+                    }
+                }, 10);
+            },
+
+            showSuccess() {
+                this.elOutput.classList.add('active');
+                document.getElementById('error-count').innerText = "0 Errors";
+                document.getElementById('error-count').style.color = "var(--text)";
+            },
+
+            reset() {
+                this.elOutput.classList.remove('active');
+                this.elBtn.classList.add('visible');
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
