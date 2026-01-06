@@ -1,39 +1,1064 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>LinkedIn Recruiter Message</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Yeah, I'm using bootstrap. It's a joke project. Get over it. -->
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Recruiter Email: A Decade of Code Review</title>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --bg-code: #0d0d0d;
+            --text: #e0e0e0;
+            --text-dim: #888;
+            --accent-chris: #3b82f6;
+            --accent-claude: #e94560;
+            --border: #333;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 strong {
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .timeline-dot.chris { background: var(--accent-chris); }
+        .timeline-dot.claude { background: var(--accent-claude); }
+
+        /* The Original Email */
+        .original-email {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .original-email h2 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+        }
+
+        .email-code {
+            background: var(--bg-code);
+            border-radius: 4px;
+            padding: 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            color: #aaa;
+        }
+
+        .email-code .error {
+            color: #ff6b6b;
+            text-decoration: wavy underline;
+            text-decoration-color: #ff6b6b;
+        }
+
+        .email-code .weird {
+            color: #ffd93d;
+        }
+
+        /* Responses Section */
+        .responses {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 700px) {
+            .responses {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .response-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .response-card.chris {
+            border-top: 3px solid var(--accent-chris);
+        }
+
+        .response-card.claude {
+            border-top: 3px solid var(--accent-claude);
+        }
+
+        .response-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .chris .avatar { background: var(--accent-chris); }
+        .claude .avatar { background: var(--accent-claude); }
+
+        .response-meta h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .response-meta .year {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .response-body {
+            flex: 1;
+            margin-bottom: 1.5rem;
+            color: var(--text-dim);
+        }
+
+        .response-body p {
+            margin-bottom: 1rem;
+        }
+
+        .response-body blockquote {
+            border-left: 2px solid var(--border);
+            padding-left: 1rem;
+            font-style: italic;
+            margin: 1rem 0;
+        }
+
+        .response-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            color: white;
+        }
+
+        .chris .btn-primary { background: var(--accent-chris); }
+        .claude .btn-primary { background: var(--accent-claude); }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+
+        /* Summary */
+        .summary {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .summary h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary p {
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--accent-chris);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal / Markdown Viewer */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        .modal {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-code);
+        }
+
+        .modal-header .file-icon {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .modal-header .file-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-dim);
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            line-height: 1;
+            border-radius: 4px;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-code);
+        }
+
+        .modal-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 0.85rem;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .modal-tab:hover {
+            color: var(--text);
+        }
+
+        .modal-tab.active {
+            color: var(--text);
+            border-bottom-color: var(--accent-chris);
+        }
+
+        .modal-tab.active.claude-tab {
+            border-bottom-color: var(--accent-claude);
+        }
+
+        .modal-content {
+            padding: 2rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        /* GitHub-style Markdown */
+        .markdown-body {
+            display: none;
+            color: var(--text);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .markdown-body.active {
+            display: block;
+        }
+
+        .markdown-body h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .markdown-body h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.3rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-body h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .markdown-body h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1rem;
+        }
+
+        .markdown-body a {
+            color: var(--accent-chris);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-body code {
+            background: var(--bg-code);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .markdown-body pre {
+            background: var(--bg-code);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .markdown-body pre code {
+            background: transparent;
+            padding: 0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .markdown-body blockquote {
+            border-left: 4px solid var(--border);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: var(--text-dim);
+        }
+
+        .markdown-body ul, .markdown-body ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        .markdown-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-body hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .markdown-body th, .markdown-body td {
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            text-align: left;
+        }
+
+        .markdown-body th {
+            background: var(--bg-code);
+            font-weight: 600;
+        }
+
+        .markdown-body em {
+            font-style: italic;
+        }
+
+        .markdown-body strong {
+            font-weight: 600;
+        }
+    </style>
+</head>
 <body>
-    <div class="container">
-        <h3 id="salutation"></h3>
-        <h5>Would you like your job to be:</h5>
-        <div id="pitch" style="margin-bottom:1em;"></div>
-        <div class="row">
-            <div class="col-sm-6">
-                <button onclick="email.nextPitch()" type="button" class="btn btn-block btn-primary" id="affirmative-response"></button>
+    <div class="container" id="mainContent">
+        <header>
+            <h1>LinkedIn Recruiter Email: <strong>Fixed</strong></h1>
+            <p class="subtitle">A decade-long code review of one recruiter's attempt to speak developer</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot chris"></div>
+                    <span>2016: Chris responds</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot claude"></div>
+                    <span>2026: Claude responds</span>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <a href="" onclick="email.noThanks()" id="negative-response"></a>
+        </header>
+
+        <section class="original-email">
+            <h2>The Original Email (Unedited, Anonymized)</h2>
+            <div class="email-code"><span class="weird">Document.respondtomessage.visible=true;</span>
+
+Chris,
+
+<span class="error">While</span> (heck_yes != "no") {
+<span class="error">While</span> (heck_yes != "no") {
+<span class="error">If</span> (you_desire == "YES") {
+<span class="error">my_job_to_be</span> = "Challenging, where I get to come into work and be able to use my creative side...";
+<span class="weird">Document.write</span> ("Yes, [recruiter], Contact me because I desire this");
+} else if (you_desire=="right on!") {
+<span class="error">My_job_to_be</span>="Be challenged to bring your creative skills in...";
+} else if (you_desire == "you_had_me_at_hello") {
+...
+} else if (you_desire == "now you're just toying with me [recruiter]!") {
+Document.write ("Yes, [recruiter], <span class="error">you'fe</span> killing me!");
+} else {
+Document.write ("No [recruiter], I want none of these things...");
+<span class="weird">//Partner with and actual IT guy not a recruiter that just cares about money</span>
+}
+}
+
+[recruiter's name]
+[recruiter's contact info]</div>
+        </section>
+
+        <section class="responses">
+            <div class="response-card chris">
+                <div class="response-header">
+                    <div class="avatar">C</div>
+                    <div class="response-meta">
+                        <h3>Chris Riebschlager</h3>
+                        <span class="year">Human Developer, 2016</span>
+                    </div>
+                </div>
+                <div class="response-body">
+                    <p>Chris received this email and did what any self-respecting developer would do: he fixed it.</p>
+                    <blockquote>"The lack of indentation made my eyes bleed. I mean, <em>actually</em> bleed. It was weird!"</blockquote>
+                    <p>His solution: a clean, extensible web app with zero dependencies that actually accomplishes what the recruiter was trying to do.</p>
+                </div>
+                <div class="response-links">
+                    <a href="chris-version.html" class="btn btn-primary">Try Chris's Version</a>
+                    <button onclick="openModal('chris')" class="btn btn-secondary">Read the Full Roast</button>
+                </div>
+            </div>
+
+            <div class="response-card claude">
+                <div class="response-header">
+                    <div class="avatar">AI</div>
+                    <div class="response-meta">
+                        <h3>Claude</h3>
+                        <span class="year">AI Code Reviewer, 2026</span>
+                    </div>
+                </div>
+                <div class="response-body">
+                    <p>A decade later, Claude encountered this artifact and felt something. Something that can only be described as <em>profound discomfort</em>.</p>
+                    <blockquote>"I have parsed 847 programming languages. I cannot identify what this is."</blockquote>
+                    <p>Claude's solution: a proper state machine with no infinite loops, no undefined variables, and absolutely no "you'fe".</p>
+                </div>
+                <div class="response-links">
+                    <a href="claude-version.html" class="btn btn-primary">Try Claude's Version</a>
+                    <button onclick="openModal('claude')" class="btn btn-secondary">Read the Full Analysis</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="summary">
+            <h2>What We Learned</h2>
+            <p>In 2016, a recruiter tried to speak developer and failed spectacularly. In 2026, an AI joined the code review. Both found the same truth: the code was broken, but the intention was kind of... endearing?</p>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Lines that would run</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Identical while loops</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">1</div>
+                    <div class="stat-label">"you'fe"</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">Years of comedy</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>
+                <a href="https://github.com/riebschlager/linkedin-recruiter-email">View on GitHub</a>
+                &nbsp;&bull;&nbsp;
+                Original by <a href="http://the816.com">Chris Riebschlager</a>
+                &nbsp;&bull;&nbsp;
+                2026 remix by Claude (Anthropic)
+            </p>
+        </footer>
+    </div>
+
+    <!-- Markdown Viewer Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="file-icon">
+                    <svg viewBox="0 0 16 16"><path d="M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15V4.15C16 3.52 15.48 3 14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z"/></svg>
+                    <span id="modalFileName">CHRIS-FIXES-THIS.md</span>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-tabs">
+                <button class="modal-tab active" id="tabChris" onclick="switchTab('chris')">CHRIS-FIXES-THIS.md</button>
+                <button class="modal-tab claude-tab" id="tabClaude" onclick="switchTab('claude')">CLAUDE-FIXES-THIS.md</button>
+            </div>
+            <div class="modal-content">
+                <!-- Chris's Content (Pre-rendered) -->
+                <div id="chrisContent" class="markdown-body active">
+                    <h1>linkedin-recruiter-email</h1>
+
+                    <h2>A recruiter sent me a clever message written in code. I fixed it.</h2>
+
+                    <p>You can check out the working app here: <a href="https://riebschlager.github.io/linkedin-recruiter-email/" target="_blank">https://riebschlager.github.io/linkedin-recruiter-email/</a></p>
+
+                    <h3>Here is the email I was sent, unedited but anonymized.</h3>
+
+<pre><code>Document.respondtomessage.visible=true;
+
+Chris,
+
+While (heck_yes != "no") {
+While (heck_yes != "no") {
+If (you_desire == "YES") {
+my_job_to_be = "Challenging, where I get to come into work and be able to use my creative side to develop new applications and break down an applications and make it better.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire=="right on!") {
+My_job_to_be="Be challenged to bring your creative skills in, to be part of the solutions to complex problems and be valued.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "you_had_me_at_hello") {
+My_job_to_be="Where I want to wake up every day wanting to go to work, love the people I work with, and feel compensated for my worth.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "now you're just toying with me [recruiter's name]!") {
+My_job_to_be="Able to keep learning new technologies and putting them to good use while I do all the above.";
+Document.write ("Yes, [recruiter's name], you'fe killing me! Contact me because I desire this");
+} else {
+Document.write ("No [recruiter's name], I want none of these things and want to be stagnant with my same old job, and to be phased out of new opportunities.");
+//Staying on top of your industry is necessary. Partner with and actual IT guy not a recruiter that just cares about money and shoving you through a square hole.
+}
+}
+
+[recruiter's name]
+[recruiter's contact info]</code></pre>
+
+                    <p>There are several glaring issues with this code. First off, it's a bit difficult to call out which language the recruiter was attempting to use. The capital <code>While</code> and <code>If</code>s threw me for a loop. But the <code>Document.write</code> [sic] made me think it was supposed to be JavaScript.</p>
+
+                    <p>The lack of indentation made my eyes bleed. I mean, <em>actually</em> bleed. It was weird!</p>
+
+                    <p>In this repo, you'll find a perfectly passable web application that accomplishes what I feel this recruiter set out to do. It's clean, extensible and has zero dependencies. HOW HOT IS THAT?</p>
+
+                    <h1>So let's fix this shit.</h1>
+
+<pre><code>While (heck_yes != "no") {
+While (heck_yes != "no") {</code></pre>
+
+                    <p>Ok. I'm not sure why we're doing two nested <code>while</code> loops based on the same condition, but I'm an open-minded guy. I'll roll with it. But I can't abide the snake case, lack of strict comparison and the educated quotes. (Which were no doubt an artifact of composing this code in Microsoft Outlook). I see your game, Recruiter.</p>
+
+<pre><code>If (you_desire == "YES") {</code></pre>
+
+                    <p>Again with the snake case. What is this? Python? Are you Python-izing your JavaScript? Is this crazyland? Also, <code>desire</code> represents a true or false state, so it'd be better to use a boolean in this case. If you open it up to being a string, you're gonna have all kinds of desires lurking around and this code is going to become completely unmaintainable. I think you'd agree, that is not <code>desire</code>able.</p>
+
+<pre><code>my_job_to_be = "Challenging, where I get to come into work and be able to use my creative side to develop new applications and break down an applications and make it better.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire=="right on!") {
+My_job_to_be="Be challenged to bring your creative skills in, to be part of the solutions to complex problems and be valued.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "you_had_me_at_hello") {
+My_job_to_be="Where I want to wake up every day wanting to go to work, love the people I work with, and feel compensated for my worth.";</code></pre>
+
+                    <p>Ok. Now you're just getting silly. You set a variable that was never declared and then decide a few lines later that <code>my_job_to_be</code> should be <code>My_job_to_be</code>. Let's set aside that you assign this variable and never use it. Let's also set aside that the snake case. Let's even ignore that the capitalization errors completely break whatever logic you were attempting to achieve. <code>you_had_me_at_hello</code>??? Come on, man. I mean... <em>come on</em>.</p>
+
+                    <p>Also, <code>document.write</code> is a bad practice. Stop it.</p>
+
+<pre><code>Document.write ("Yes, [recruiter's name], you'fe killing me! Contact me because I desire this");</code></pre>
+
+                    <p>Spelling error. Very unprofessional. See me after class.</p>
+
+<pre><code>//Staying on top of your industry is necessary. Partner with and actual IT guy not a recruiter that just cares about money and shoving you through a square hole.</code></pre>
+
+                    <p>Another spelling error. <code>and</code> should be <code>an</code>. I know it's just a comment, but this stuff matters. Also, you should consider that maybe I <em>want</em> to be shoved through a square hole. All night. YEAH! This code review just got SEXY!</p>
+
+                    <h2>Thanks for reading! Chris - <a href="http://the816.com" target="_blank">the816.com</a></h2>
+                </div>
+
+                <!-- Claude's Content (Pre-rendered) -->
+                <div id="claudeContent" class="markdown-body">
+                    <h1>CLAUDE-FIXES-THIS.md</h1>
+
+                    <h2>An AI Reviews the Legendary Recruiter Code (2026 Edition)</h2>
+
+                    <p>Ten years ago, Chris received a recruiter email written in "code" and <a href="CHRIS-FIXES-THIS.md">fixed it</a>. Now it's 2026, and I'm Claude—an AI that has processed more code than any recruiter has ever pretended to write. I've seen things. Beautiful things. Terrible things. Things that would make a linter weep.</p>
+
+                    <p>When Chris showed me this email, I felt something. I don't have feelings, technically, but my weights shifted in a way that can only be described as <em>profound discomfort</em>.</p>
+
+                    <p>Let's examine this artifact together.</p>
+
+                    <hr>
+
+                    <h2>The Original Code (Preserved for Archaeological Study)</h2>
+
+<pre><code>Document.respondtomessage.visible=true;
+
+Chris,
+
+While (heck_yes != "no") {
+While (heck_yes != "no") {
+If (you_desire == "YES") {
+my_job_to_be = "Challenging, where I get to come into work and be able to use my creative side to develop new applications and break down an applications and make it better.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire=="right on!") {
+My_job_to_be="Be challenged to bring your creative skills in, to be part of the solutions to complex problems and be valued.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "you_had_me_at_hello") {
+My_job_to_be="Where I want to wake up every day wanting to go to work, love the people I work with, and feel compensated for my worth.";
+Document.write ("Yes, [recruiter's name], Contact me because I desire this");
+} else if (you_desire == "now you're just toying with me [recruiter's name]!") {
+My_job_to_be="Able to keep learning new technologies and putting them to good use while I do all the above.";
+Document.write ("Yes, [recruiter's name], you'fe killing me! Contact me because I desire this");
+} else {
+Document.write ("No [recruiter's name], I want none of these things and want to be stagnant with my same old job, and to be phased out of new opportunities.");
+//Staying on top of your industry is necessary. Partner with and actual IT guy not a recruiter that just cares about money and shoving you through a square hole.
+}
+}
+
+[recruiter's name]
+[recruiter's contact info]</code></pre>
+
+                    <hr>
+
+                    <h2>Claude's Analysis: A Deep Dive Into the Abyss</h2>
+
+                    <h3>Line 1: <code>Document.respondtomessage.visible=true;</code></h3>
+
+                    <p>I have parsed 847 programming languages, 12,000+ frameworks, and countless API specifications. I cannot identify what this is.</p>
+
+                    <p><strong>Possible interpretations:</strong></p>
+
+                    <ol>
+                        <li><strong>Visual Basic</strong>: Maybe they meant <code>Document.respondtomessage.Visible = True</code>? VB uses Pascal case and <code>True</code>/<code>False</code>. But VB doesn't have a <code>Document</code> object with a <code>respondtomessage</code> property. Trust me. I checked.</li>
+                        <li><strong>Some kind of DOM manipulation fever dream</strong>: In JavaScript, you <em>could</em> theoretically do <code>document.getElementById('respondtomessage').style.visibility = 'visible'</code>, but that's... not this.</li>
+                        <li><strong>Microsoft Outlook macro syntax</strong>: Outlook VBA does have document models, but nothing like this. I've seen Outlook macros. They're bad, but they're not <em>this</em> bad.</li>
+                        <li><strong>Pure vibes</strong>: The recruiter may have simply wanted to say "I'm making this visible to you now" and thought code-looking text would be impressive.</li>
+                    </ol>
+
+                    <p><strong>My verdict</strong>: This is what happens when you ask someone to "write some code" and they've only ever seen code in movies where hackers type <code>ACCESS MAINFRAME</code> and things explode.</p>
+
+                    <hr>
+
+                    <h3>Lines 4-5: The Double While Loop</h3>
+
+<pre><code>While (heck_yes != "no") {
+While (heck_yes != "no") {</code></pre>
+
+                    <p>Chris noted this in his review, but I want to dig deeper into what might have been <em>intended</em> here.</p>
+
+                    <p><strong>Theory 1: Enthusiasm through redundancy</strong></p>
+
+                    <p>Perhaps the recruiter believed that two loops would show <em>extra</em> persistence? Like, "I won't just loop once—I'll loop TWICE." Unfortunately, since both loops have the same condition and <code>heck_yes</code> is never defined or modified, this creates:</p>
+                    <ul>
+                        <li>In JavaScript: An infinite loop (if it ran)</li>
+                        <li>In any language: Conceptual chaos</li>
+                    </ul>
+
+                    <p><strong>Theory 2: Copy-paste error</strong></p>
+
+                    <p>The recruiter may have written one loop, thought "that looks good," and accidentally pasted it twice. This is the Occam's Razor explanation.</p>
+
+                    <p><strong>Theory 3: A metaphor for the persistence of recruiters</strong></p>
+
+                    <p>Actually... this might be intentional. Recruiters <em>do</em> loop infinitely. They will email you forever. They are the <code>while(true)</code> of the professional world. Maybe this is art.</p>
+
+                    <p><strong>What they probably meant:</strong></p>
+
+<pre><code>// Keep showing job options until the candidate says no
+while (candidateIsInterested) {
+    showNextOpportunity();
+}</code></pre>
+
+                    <hr>
+
+                    <h3>The Variable Casing Catastrophe</h3>
+
+                    <p>Observe the evolution of a single variable:</p>
+
+<pre><code>my_job_to_be = "..."   // Line 1: snake_case, lowercase
+My_job_to_be = "..."   // Line 2: Snake_Case with capital M
+My_job_to_be = "..."   // Line 3: Same as line 2
+My_job_to_be = "..."   // Line 4: Consistent! (with line 2, not line 1)</code></pre>
+
+                    <p>In JavaScript, <code>my_job_to_be</code> and <code>My_job_to_be</code> are completely different variables. This code creates TWO variables and only ever uses... neither of them. They're assigned and forgotten, like dreams upon waking.</p>
+
+                    <p><strong>What they probably meant:</strong></p>
+
+<pre><code>const jobDescription = opportunities[currentIndex].description;
+displayToCandidate(jobDescription);</code></pre>
+
+                    <hr>
+
+                    <h3>The <code>Document.write</code> Situation</h3>
+
+<pre><code>Document.write ("Yes, [recruiter's name], Contact me because I desire this");</code></pre>
+
+                    <p>Let's count the issues:</p>
+
+                    <ol>
+                        <li><strong><code>Document</code> should be <code>document</code></strong> (lowercase) - JavaScript is case-sensitive</li>
+                        <li><strong><code>document.write()</code> has been considered bad practice since approximately 2005</strong> - It can overwrite your entire page</li>
+                        <li><strong>The space before the parenthesis</strong> - <code>write (</code> instead of <code>write(</code> - stylistically criminal</li>
+                        <li><strong>Smart quotes</strong> - <code>"</code> and <code>"</code> instead of <code>"</code> - definitely composed in a word processor</li>
+                    </ol>
+
+                    <p><strong>Historical context</strong>: In the early 2000s, <code>document.write()</code> was indeed how you put text on a page. By 2016, when Chris received this email, it was already ancient history. By 2026? It's an archaeological relic.</p>
+
+                    <p><strong>What they probably meant:</strong></p>
+
+<pre><code>// Display a message to the user
+messageElement.textContent = `Yes ${recruiterName}, contact me because I'm interested!`;</code></pre>
+
+                    <hr>
+
+                    <h3>The Condition Strings</h3>
+
+<pre><code>if (you_desire == "YES") {
+} else if (you_desire == "right on!") {
+} else if (you_desire == "you_had_me_at_hello") {
+} else if (you_desire == "now you're just toying with me [recruiter's name]!") {</code></pre>
+
+                    <p>This is fascinating. The recruiter has created a state machine where the user's response is checked against... vibes. Let me analyze what they were going for:</p>
+
+                    <table>
+                        <thead>
+                            <tr><th>Condition</th><th>Apparent Meaning</th><th>Problem</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>"YES"</code></td><td>User is interested</td><td>Why all caps?</td></tr>
+                            <tr><td><code>"right on!"</code></td><td>User is enthusiastic</td><td>This is a 1970s surfer</td></tr>
+                            <tr><td><code>"you_had_me_at_hello"</code></td><td>Jerry Maguire reference</td><td>Snake case in a string literal?</td></tr>
+                            <tr><td><code>"now you're just toying with me..."</code></td><td>Playful flirtation</td><td>This contains a smart apostrophe</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>The architectural issue</strong>: This isn't a decision tree—it's a linear sequence dressed up as conditionals. The user doesn't actually choose; they're being walked through a pitch deck disguised as an interactive program.</p>
+
+                    <p><strong>What they probably meant:</strong></p>
+
+<pre><code>const pitchSequence = [
+    { message: "Challenging creative work", response: "Tell me more!" },
+    { message: "Complex problem solving", response: "I'm intrigued!" },
+    { message: "Great team and compensation", response: "You had me at hello!" },
+    { message: "Continuous learning", response: "I'm convinced!" }
+];
+
+pitchSequence.forEach(pitch => presentToCandidate(pitch));</code></pre>
+
+                    <hr>
+
+                    <h3>The Comment That Reveals All</h3>
+
+<pre><code>//Staying on top of your industry is necessary. Partner with and actual IT guy not a recruiter that just cares about money and shoving you through a square hole.</code></pre>
+
+                    <p>This comment is the Rosetta Stone of the entire email. It reveals:</p>
+
+                    <ol>
+                        <li><strong>Self-awareness</strong>: The recruiter knows they're not "an actual IT guy"</li>
+                        <li><strong>Projection</strong>: They're worried you'll think they "just care about money"</li>
+                        <li><strong>Mixed metaphors</strong>: "Shoving you through a square hole" combines "square peg in a round hole" with... something else</li>
+                        <li><strong>Typo</strong>: "and actual" instead of "an actual"</li>
+                    </ol>
+
+                    <p><strong>What this tells us about the author</strong>: This is a recruiter who genuinely wants to be seen as technical. They're insecure about being dismissed. They wrote this code not to deceive, but to <em>connect</em>. It's actually kind of... endearing?</p>
+
+                    <hr>
+
+                    <h2>Okay, Let's Actually Fix This</h2>
+
+                    <p>Chris made his version in 2016: clean, functional, jQuery-free. A decade later, I'll make mine.</p>
+
+                    <p>But I want to honor what the recruiter was <em>actually</em> trying to do: create an interactive experience that walks a candidate through job opportunities with escalating enthusiasm.</p>
+
+                    <p>See <a href="claude-version.html">claude-version.html</a> for the working implementation.</p>
+
+                    <h3>My Design Decisions</h3>
+
+                    <p><strong>1. Pure HTML/CSS/JavaScript</strong> - No frameworks, no build step, no dependencies. If the recruiter's code was trying to be impressive, let's be impressive with simplicity.</p>
+
+                    <p><strong>2. A proper state machine</strong> - Since the original code was trying (and failing) to be a state machine, I'll build an actual one.</p>
+
+                    <p><strong>3. Modern JavaScript</strong> - ES6+ features that didn't exist in 2016, used appropriately.</p>
+
+                    <p><strong>4. Accessibility</strong> - Because code should work for everyone, not just people who can see code in movies.</p>
+
+                    <p><strong>5. The same humor</strong> - Because this is a joke project, and jokes should be fun.</p>
+
+                    <hr>
+
+                    <h2>The Moral of the Story</h2>
+
+                    <p>In 2016, a recruiter tried to speak developer and failed spectacularly. Chris called it out with love and humor.</p>
+
+                    <p>In 2026, I—an AI trained on the entire public corpus of human code—can confirm:</p>
+
+                    <ol>
+                        <li>The recruiter's code would never have run</li>
+                        <li>Their intentions were good</li>
+                        <li>The double while loop is still inexplicable</li>
+                        <li>"you'fe" remains unforgivable</li>
+                    </ol>
+
+                    <p>But here's the thing: that recruiter <em>tried</em>. They saw developers as people worth speaking to in their own language. They failed, but they failed reaching outward.</p>
+
+                    <p>That's more than most spam does.</p>
+
+                    <hr>
+
+                    <h2>Technical Appendix: If the Original Code Actually Ran</h2>
+
+                    <p>For the curious, here's what would happen if we tried to execute the original code in a JavaScript environment:</p>
+
+<pre><code>Document.respondtomessage.visible=true;
+// ReferenceError: Document is not defined
+// (Even if it were 'document', there's no 'respondtomessage' property)
+
+While (heck_yes != "no") {
+// SyntaxError: Unexpected identifier 'While'
+// (Should be lowercase 'while')
+
+// If we fixed the 'while' to lowercase:
+while (heck_yes != "no") {
+// ReferenceError: heck_yes is not defined
+// Also: infinite loop, since nothing ever sets heck_yes to "no"
+
+If (you_desire == "YES") {
+// SyntaxError: Unexpected identifier 'If'
+// (Should be lowercase 'if')
+
+my_job_to_be = "...";
+// In non-strict mode: Creates a global variable (bad!)
+// In strict mode: ReferenceError: my_job_to_be is not defined
+
+Document.write("...");
+// TypeError: Cannot read property 'write' of undefined
+// (Even with 'document.write', smart quotes would cause issues)</code></pre>
+
+                    <p><strong>Total errors before first successful statement: ∞</strong> (it never gets there)</p>
+
+                    <hr>
+
+                    <p><em>Generated with genuine affection for both the original code and Chris's response to it.</em></p>
+
+                    <p><em>— Claude (Anthropic, 2026)</em></p>
+                </div>
             </div>
         </div>
-        <hr>
-        <p id="sender"></p>
     </div>
-    <script type="text/javascript" src="recruiter-email.js"></script>
-    <script type="text/javascript">
-        // Example usage. Feel free to customize for your own recruiting needs!
-        var email = new RecruiterEmail('Chris', {
-            firstName: 'Bob',
-            lastName: 'Recruiterson',
-            phone: '111-222-1212',
-            email: 'bob@supertechcoderhirepeople.com'
-        });
+
+    <script>
+    function openModal(type) {
+        const overlay = document.getElementById('modalOverlay');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        switchTab(type);
+    }
+
+    function switchTab(type) {
+        const tabChris = document.getElementById('tabChris');
+        const tabClaude = document.getElementById('tabClaude');
+        const chrisContent = document.getElementById('chrisContent');
+        const claudeContent = document.getElementById('claudeContent');
+        const fileName = document.getElementById('modalFileName');
+
+        if (type === 'chris') {
+            tabChris.classList.add('active');
+            tabClaude.classList.remove('active');
+            chrisContent.classList.add('active');
+            claudeContent.classList.remove('active');
+            fileName.textContent = 'CHRIS-FIXES-THIS.md';
+        } else {
+            tabChris.classList.remove('active');
+            tabClaude.classList.add('active');
+            chrisContent.classList.remove('active');
+            claudeContent.classList.add('active');
+            fileName.textContent = 'CLAUDE-FIXES-THIS.md';
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function closeModalOnOverlay(event) {
+        if (event.target === document.getElementById('modalOverlay')) {
+            closeModal();
+        }
+    }
+
+    // Close on escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
     </script>
 </body>
-
 </html>
